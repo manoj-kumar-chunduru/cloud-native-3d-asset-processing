@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-native-3d-asset-processing
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: asset-platform
+  template:
+    metadata:
+      labels:
+        app: asset-platform
+    spec:
+      containers:
+        - name: asset-platform
+          image: cloud-native-3d-asset-processing:latest
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000

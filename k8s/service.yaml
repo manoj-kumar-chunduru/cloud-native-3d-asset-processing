@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: asset-platform
+spec:
+  selector:
+    app: asset-platform
+  ports:
+    - port: 80
+      targetPort: 8000

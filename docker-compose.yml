@@ -1,0 +1,8 @@
+services:
+  asset-platform:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      ASSET_WORKERS: "4"
+      ASSET_MAX_RETRIES: "2"
