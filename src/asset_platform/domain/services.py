@@ -1,7 +1,9 @@
 import hashlib
 
+
 def content_hash(content: str) -> str:
     return hashlib.sha256(content.encode("utf-8")).hexdigest()
+
 
 def extract_spatial_metadata(name: str, content: str, asset_format: str) -> dict:
     # Lightweight deterministic metadata extraction suitable for a reference service.

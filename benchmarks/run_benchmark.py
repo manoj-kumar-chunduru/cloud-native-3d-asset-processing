@@ -1,6 +1,7 @@
-import statistics
 import time
+
 from asset_platform.domain.services import content_hash
+
 
 def main():
     samples = []
@@ -22,6 +23,7 @@ def main():
     print(f"latency_ms_p50={p50:.4f}")
     print(f"latency_ms_p95={p95:.4f}")
     print(f"latency_ms_p99={p99:.4f}")
+
 
 if __name__ == "__main__":
     main()

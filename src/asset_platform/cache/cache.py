@@ -1,5 +1,6 @@
-from threading import RLock
 import time
+from threading import RLock
+
 
 class TTLCache:
     def __init__(self, ttl_seconds: int = 300):

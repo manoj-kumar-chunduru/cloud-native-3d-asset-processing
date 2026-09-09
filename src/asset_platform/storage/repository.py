@@ -1,5 +1,7 @@
 from threading import RLock
+
 from asset_platform.domain.models import Asset, Job
+
 
 class AssetRepository:
     def __init__(self):

@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+
 from asset_platform.cache.cache import TTLCache
 from asset_platform.config import Settings
 from asset_platform.domain.models import Asset, AssetCreate
@@ -15,13 +16,16 @@ engine = ProcessingEngine(repository, settings.worker_count, settings.max_retrie
 
 app = FastAPI(title="Cloud-Native 3D Asset Processing Platform", version="1.0.0")
 
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
+
 @app.get("/ready")
 def ready():
     return {"status": "ready"}
+
 
 @app.post("/assets", response_model=Asset, status_code=201)
 def register_asset(payload: AssetCreate):
@@ -43,6 +47,7 @@ def register_asset(payload: AssetCreate):
     metrics.inc("assets_registered")
     return asset
 
+
 @app.get("/assets/{asset_id}", response_model=Asset)
 def get_asset(asset_id: str):
     cached = cache.get(f"asset:{asset_id}")
@@ -54,6 +59,7 @@ def get_asset(asset_id: str):
     cache.set(f"asset:{asset_id}", asset)
     return asset
 
+
 @app.post("/assets/{asset_id}/process")
 def process(asset_id: str):
     asset = repository.get_asset(asset_id)
@@ -63,6 +69,7 @@ def process(asset_id: str):
     metrics.inc("jobs_submitted")
     return job
 
+
 @app.get("/jobs/{job_id}")
 def get_job(job_id: str):
     job = repository.get_job(job_id)
@@ -70,9 +77,11 @@ def get_job(job_id: str):
         raise HTTPException(status_code=404, detail="job not found")
     return job
 
+
 @app.get("/metrics")
 def metrics_endpoint():
     return metrics.prometheus()
+
 
 @app.on_event("shutdown")
 def shutdown():

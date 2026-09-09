@@ -1,6 +1,7 @@
 from asset_platform.domain.models import Asset
 from asset_platform.domain.services import extract_spatial_metadata
 
+
 def process_asset(asset: Asset) -> dict:
     return {
         "asset_id": asset.asset_id,

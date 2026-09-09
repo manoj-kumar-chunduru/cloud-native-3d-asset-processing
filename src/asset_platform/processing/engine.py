@@ -1,11 +1,12 @@
-from concurrent.futures import ThreadPoolExecutor
-from threading import RLock
 import time
 import uuid
+from concurrent.futures import ThreadPoolExecutor
+from threading import RLock
 
 from asset_platform.domain.models import Asset, Job, JobStatus
 from asset_platform.processing.processors import process_asset
 from asset_platform.storage.repository import AssetRepository
+
 
 class ProcessingEngine:
     def __init__(self, repository: AssetRepository, worker_count: int = 4, max_retries: int = 2):
@@ -41,7 +42,7 @@ class ProcessingEngine:
                     job.error = None
                     self.repository.save_job(job)
                     return
-                except Exception as exc:
+                except RuntimeError as exc:
                     job.error = str(exc)
                     if attempt > self.max_retries:
                         job.status = JobStatus.FAILED
